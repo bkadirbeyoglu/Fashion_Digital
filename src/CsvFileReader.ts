@@ -21,7 +21,7 @@ export class CsvFileReader {
         this.data = strData.map((row: string[]): SpeechData => {
                         return [
                             row[0],
-                            row[1] as SpeechTopic,
+                            row[1].trim() as SpeechTopic,
                             dateStringToDate(row[2]),
                             parseInt(row[3])
                         ]

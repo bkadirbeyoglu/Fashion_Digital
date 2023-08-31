@@ -54,28 +54,23 @@ createServer((req: IncomingMessage, res: ServerResponse) => {
 
 
 const generateAnswerObject = () => {
-    // 1. Which politician gave the most speeches in 2013?
-    // 2. Which politician gave the most speeches on the topic „Internal Security"?
-    // 3. Which politician used the fewest words (in total)?
-
     const answerObj: Answer = {
         mostSpeechesIn2012: null,
         mostSecurity: "",
         leastWordy: ""
     }
 
-    // Answer to the first question...
+    // Answer to the first question: Which politician gave the most speeches in 2013?
     const year = 2012;
     let count = speeches.reduce((acc, cur) => cur[2].getFullYear() === year ? ++acc : acc, 0);
-    //console.log(count);
     if (count > 0) {
         answerObj.mostSpeechesIn2012 = count;
     }
-    console.log(answerObj);
+    //console.log(answerObj);
 
-    // Answer to the second question...
+    // Answer to the second question: Which politician gave the most speeches on the topic „Internal Security"?
     const filteredSpeeches = speeches.filter(s => s[1] == SpeechTopic.InternalSecurity);
-    console.log(filteredSpeeches);
+    //console.log(filteredSpeeches);
     let hash = new Map<string, number>();
     for (let i = 0; i < filteredSpeeches.length; i++) {
         let politician: string = filteredSpeeches[i][0];
@@ -85,9 +80,13 @@ const generateAnswerObject = () => {
             hash.set(politician, 1);
         }
     }
-    console.log(hash);
-    let sortedArrFromHash = Array.from([...hash.entries()]);
-    console.log(sortedArrFromHash);
+    let sortedArrFromHash = Array.from([...hash.entries()]).sort((a, b) => { return b[1] - a[1] });
+    //console.log(sortedArrFromHash);
+    answerObj.mostSecurity = sortedArrFromHash[0][0];
+    console.log(answerObj);
+
+    // Answer to the third question: Which politician used the fewest words (in total)?
+
 }
 
 
