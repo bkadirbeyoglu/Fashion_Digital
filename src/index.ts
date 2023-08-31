@@ -45,6 +45,15 @@ createServer((req: IncomingMessage, res: ServerResponse) => {
 });
 
 
+const generateAnswerObject = () => {
+    // 1. Which politician gave the most speeches in 2013?
+    // 2. Which politician gave the most speeches on the topic „Internal Security"?
+    // 3. Which politician used the fewest words (in total)?
+
+    
+}
+
+
 const downloadFile = (url: string, index: number): Promise<boolean> => {
     //console.log(url, index);
     return new Promise((resolve, reject) => {
