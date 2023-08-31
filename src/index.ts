@@ -6,6 +6,12 @@ import { SpeechData } from "./SpeechData";
 
 const PORT: number = 8080;
 
+type Answer = {
+    mostSpeechesIn2012: number | null,
+    mostSecurity: string,
+    leastWordy: string
+}
+
 
 const speeches: SpeechData[] = [];
 
@@ -31,7 +37,9 @@ createServer((req: IncomingMessage, res: ServerResponse) => {
                     speeches.push(...reader.data);
                 }
             }
-            console.log(speeches);
+            //console.log(speeches);
+
+            generateAnswerObject();
         });
 
         res.end("OK");
@@ -45,12 +53,25 @@ createServer((req: IncomingMessage, res: ServerResponse) => {
 });
 
 
-const generateAnswerObject = () => {
+const generateAnswerObject = () => {
     // 1. Which politician gave the most speeches in 2013?
     // 2. Which politician gave the most speeches on the topic „Internal Security"?
     // 3. Which politician used the fewest words (in total)?
 
-    
+    const answerObj: Answer = {
+        mostSpeechesIn2012: null,
+        mostSecurity: "",
+        leastWordy: ""
+    }
+
+    // Answering first question...
+    const year = 2012;
+    let count = speeches.reduce((acc, cur) => cur[2].getFullYear() === year ? ++acc : acc, 0);
+    //console.log(count);
+    if (count > 0) {
+        answerObj.mostSpeechesIn2012 = count;
+    }
+    console.log(answerObj);
 }
 
 
