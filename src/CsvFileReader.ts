@@ -1,12 +1,14 @@
 import fs from "fs";
-import { dateStringToDate } from "./utils";
-import { SpeechData, SpeechTopic } from "./SpeechData"
 
 
-export class CsvFileReader {
-    data: SpeechData[] = [];
+export abstract class CsvFileReader<T> {
+    data: T[] = [];
 
     constructor(public filename: string) { }
+
+    abstract mapRow(row: string[]): T
+
+    abstract prepareStrData(strData: string[][]): string[][]
 
     read(): void {
         let strData: string[][];
@@ -15,16 +17,10 @@ export class CsvFileReader {
                     .map((line: string): string[] => {
                         return line.split(",");
                     });
-        strData.shift();
-        strData.pop();
+        //strData.shift();
+        //strData.pop();
+        this.prepareStrData(strData);
         //console.log(this.data);
-        this.data = strData.map((row: string[]): SpeechData => {
-                        return [
-                            row[0],
-                            row[1].trim() as SpeechTopic,
-                            dateStringToDate(row[2]),
-                            parseInt(row[3])
-                        ]
-                    });
+        this.data = strData.map(this.mapRow);
     }
 }

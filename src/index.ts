@@ -3,6 +3,7 @@ import url, { UrlWithParsedQuery } from "url";
 import fs from "fs";
 import { CsvFileReader } from "./CsvFileReader";
 import { SpeechData, SpeechTopic } from "./SpeechData";
+import { SpeechReader } from "./SpeechReader";
 
 const PORT: number = 8080;
 
@@ -33,7 +34,7 @@ createServer((req: IncomingMessage, res: ServerResponse) => {
             for (let k = 0; k < results.length; k++) {
                 if (results[k] === true) {
                     console.log(`Reading file with index: ${k}`);
-                    const reader = new CsvFileReader(`fashion_digital_${k}.csv`);
+                    const reader = new SpeechReader(`fashion_digital_${k}.csv`);
                     reader.read();
                     speeches.push(...reader.data);
                 }
