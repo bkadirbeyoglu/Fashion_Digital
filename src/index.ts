@@ -2,7 +2,7 @@ import { createServer, IncomingMessage, ServerResponse } from "http";
 import url, { UrlWithParsedQuery } from "url";
 import fs from "fs";
 import { CsvFileReader } from "./CsvFileReader";
-import { SpeechData } from "./SpeechData";
+import { SpeechData, SpeechTopic } from "./SpeechData";
 
 const PORT: number = 8080;
 
@@ -64,7 +64,7 @@ const generateAnswerObject = () => {
         leastWordy: ""
     }
 
-    // Answering first question...
+    // Answer to the first question...
     const year = 2012;
     let count = speeches.reduce((acc, cur) => cur[2].getFullYear() === year ? ++acc : acc, 0);
     //console.log(count);
@@ -72,6 +72,22 @@ const generateAnswerObject = () => {
         answerObj.mostSpeechesIn2012 = count;
     }
     console.log(answerObj);
+
+    // Answer to the second question...
+    const filteredSpeeches = speeches.filter(s => s[1] == SpeechTopic.InternalSecurity);
+    console.log(filteredSpeeches);
+    let hash = new Map<string, number>();
+    for (let i = 0; i < filteredSpeeches.length; i++) {
+        let politician: string = filteredSpeeches[i][0];
+        if (hash.has(politician)) {
+            hash.set(politician, hash.get(politician)! + 1);
+        } else {
+            hash.set(politician, 1);
+        }
+    }
+    console.log(hash);
+    let sortedArrFromHash = Array.from([...hash.entries()]);
+    console.log(sortedArrFromHash);
 }
 
 
